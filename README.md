@@ -1,3 +1,12 @@
+# WDD430-HandcraftedHaven
+
+## Contributors
+* Talia Mae Olsen
+* Chukwuebuka Cornelius Ibeh
+* Melchizedek Galvan Fernandez
+* Eno-obong Etim Bassey
+* Simeon Chirunga
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
