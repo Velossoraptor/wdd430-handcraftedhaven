@@ -5,14 +5,18 @@ CREATE TABLE users (
     lname VARCHAR(150) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
-    phone VARCHAR(20),
+    phone VARCHAR(20) NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
 -- VENDORS / ARTISANS
 CREATE TABLE vendors (
     vendor_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID REFERENCES users(user_id) ON DELETE SET NULL,
+    fname VARCHAR(150) NOT NULL,
+    lname VARCHAR(150) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    phone VARCHAR(20) NOT NULL,
     shop_name VARCHAR(200) NOT NULL,
     bio TEXT,
     is_verified BOOLEAN DEFAULT FALSE,
@@ -91,3 +95,21 @@ CREATE TABLE addresses (
     is_default BOOLEAN DEFAULT FALSE
 );
 
+-- carts
+CREATE TABLE carts (
+   cart_id UUID default gen_random_uuid() PRIMARY KEY,
+    user_id UUID REFERENCES users(user_id) on DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Cart item
+CREATE TABLE cart_items(
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    cart_id UUID NOT NULL REFERENCES public.carts(cart_id),
+    product_name TEXT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    product_image TEXT NOT NULL,
+    quantity INTEGER NOT NULL,
+    product_id UUID NOT NULL REFERENCES products(product_id)
+);
