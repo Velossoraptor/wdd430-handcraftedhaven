@@ -1,6 +1,8 @@
 import Reviews from '@/components/productDetails/Reviews';
 import ProductSummary from '@/components/productDetails/ProductSummary';
+import ReviewSummary from '@/components/productDetails/reviewSummary';
 import { Review, ProductInformation } from '@/components/productDetails/interfaces';
+// Change route to be /products/[id] once db is connected
 // Replace with dynamic list of reviews from db, all from the same productName and seller (product ID?)
 const mockReviews: Review[] = [
 	{
@@ -45,8 +47,11 @@ export default function DetailPage() {
 				<h2 className='text-3xl font-bold mb-6 text-center'>
 					Product Detail Page Title | Change Later
 				</h2>
-				{/* Import Reviews, product summary here */}
+				{/* Product Summary; Image, Information, Vendor Card*/}
                 <ProductSummary productInfo={mockProduct}/>
+				{/* Form to write reviews */}
+				<ReviewSummary />
+				{/* Load reviews that have already been written */}
 				<Reviews reviewData={mockReviews} />
 			</section>
 		</main>

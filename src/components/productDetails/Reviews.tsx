@@ -5,6 +5,7 @@ export default function reviews({ reviewData }: ReviewProps) {
 	return (
 		<div className='space-y-4 overflow-y-auto flex-1  container mx-auto '>
 			<h3 className='text-xl font-bold mb-6'>Reviews</h3>
+			{/* Need to figure out pagination here so that loading times decrease on products with a lot of reviews */}
 			{reviewData.map((review) => (
 				<div key={review.id} className='border-b last:border-b-0 pb-3'>
 					<div className='flex justify-between items-center'>
