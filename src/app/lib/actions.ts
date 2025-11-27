@@ -36,10 +36,6 @@ export async function authenticate(
   }
 }
 
-
-
-
-
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 export async function signup(state: FormState, formData: FormData) {
@@ -48,6 +44,7 @@ export async function signup(state: FormState, formData: FormData) {
     name: formData.get('name'),
     email: formData.get('email'),
     password: formData.get('password'),
+    role: formData.get('role'),
   });
 
   // If any form fields are invalid, return early
@@ -57,7 +54,7 @@ export async function signup(state: FormState, formData: FormData) {
     };
   }
 
-  const { name, email, password } = validatedFields.data;
+  const { name, email, password, role } = validatedFields.data;
 
   try {
     // Check if user already exists
@@ -74,10 +71,10 @@ export async function signup(state: FormState, formData: FormData) {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Insert new user
+    // Insert new user into the database
     await sql`
-      INSERT INTO users (name, email, password)
-      VALUES (${name}, ${email}, ${hashedPassword})
+      INSERT INTO users (name, email, password, role)
+      VALUES (${name}, ${email}, ${hashedPassword}, ${role})
     `;
 
   } catch (error) {
@@ -90,8 +87,6 @@ export async function signup(state: FormState, formData: FormData) {
   // Redirect to login page after successful signup
   redirect('/login');
 }
-
-
 
 export async function signOutAction() {
   await signOut({ redirectTo: '/' });

@@ -8,7 +8,6 @@ CREATE TABLE users (
     phone VARCHAR(20) NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
-
 -- VENDORS / ARTISANS
 CREATE TABLE vendors (
     vendor_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -23,28 +22,26 @@ CREATE TABLE vendors (
     profile_image TEXT,
     created_at TIMESTAMP DEFAULT NOW()
 );
-
 -- CATEGORIES
 CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL,
     description TEXT
 );
-
 -- PRODUCTS / LISTINGS
 CREATE TABLE products (
     product_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     vendor_id UUID REFERENCES vendors(vendor_id) ON DELETE CASCADE,
-    category_id INT REFERENCES categories(category_id) ON DELETE SET NULL,
-    title VARCHAR(200) NOT NULL,
-    description TEXT,
-    price NUMERIC(10, 2) NOT NULL,
-    image_url TEXT NOT NULL,
-    stock INT DEFAULT 0,
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT NOW()
+    category_id INT REFERENCES categories(category_id) ON DELETE
+    SET NULL,
+        title VARCHAR(200) NOT NULL,
+        description TEXT,
+        price NUMERIC(10, 2) NOT NULL,
+        image_url TEXT NOT NULL,
+        stock INT DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT NOW()
 );
-
 -- FAVORITES (Wishlists)
 CREATE TABLE favorites (
     user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,
@@ -52,35 +49,36 @@ CREATE TABLE favorites (
     created_at TIMESTAMP DEFAULT NOW(),
     PRIMARY KEY (user_id, product_id)
 );
-
 -- ORDERS
 CREATE TABLE orders (
     order_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,
     total_amount NUMERIC(10, 2) NOT NULL,
-    status VARCHAR(30) DEFAULT 'pending',  -- pending | paid | shipped | cancelled | delivered
+    status VARCHAR(30) DEFAULT 'pending',
+    -- pending | paid | shipped | cancelled | delivered
     created_at TIMESTAMP DEFAULT NOW()
 );
-
 -- ORDER ITEMS
 CREATE TABLE order_items (
     order_item_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     order_id UUID REFERENCES orders(order_id) ON DELETE CASCADE,
-    product_id UUID REFERENCES products(product_id) ON DELETE SET NULL,
-    quantity INT NOT NULL,
-    price_each NUMERIC(10, 2) NOT NULL
+    product_id UUID REFERENCES products(product_id) ON DELETE
+    SET NULL,
+        quantity INT NOT NULL,
+        price_each NUMERIC(10, 2) NOT NULL
 );
-
 -- REVIEWS
 CREATE TABLE reviews (
     review_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,
     product_id UUID REFERENCES products(product_id) ON DELETE CASCADE,
-    rating INT CHECK (rating >= 1 AND rating <= 5),
+    rating INT CHECK (
+        rating >= 1
+        AND rating <= 5
+    ),
     comment TEXT,
     created_at TIMESTAMP DEFAULT NOW()
 );
-
 -- ADDRESSES (For shipping)
 CREATE TABLE addresses (
     address_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -94,21 +92,19 @@ CREATE TABLE addresses (
     postal_code VARCHAR(20),
     is_default BOOLEAN DEFAULT FALSE
 );
-
 -- carts
 CREATE TABLE carts (
-   cart_id UUID default gen_random_uuid() PRIMARY KEY,
+    cart_id UUID default gen_random_uuid() PRIMARY KEY,
     user_id UUID REFERENCES users(user_id) on DELETE CASCADE,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );
-
 -- Cart item
 CREATE TABLE cart_items(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     cart_id UUID NOT NULL REFERENCES public.carts(cart_id),
     product_name TEXT NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
     product_image TEXT NOT NULL,
     quantity INTEGER NOT NULL,
     product_id UUID NOT NULL REFERENCES products(product_id)
