@@ -1,5 +1,5 @@
 import Hero from "../components/Hero";
-import ProductGrid from "../components/ProductGrid"; // The path was corrected here
+import ProductGrid from "../components/ProductGrid";
 
 export default function HomePage() {
   return (
