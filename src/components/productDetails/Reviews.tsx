@@ -26,9 +26,9 @@ export default function reviews({ reviewData }: ReviewProps) {
 						</div>
 					</div>
 					<p className='text-sm text-gray-700 mt-1 italic line-clamp-2'>
-						{review.comment}
+						{review.feedback}
 					</p>
-					<p className='text-xs text-gray-500 mt-1'>- {review.customerName}</p>
+					<p className='text-xs text-gray-500 mt-1'>- {review.fname} {review.lname}</p>
 				</div>
 			))}
 		</div>
