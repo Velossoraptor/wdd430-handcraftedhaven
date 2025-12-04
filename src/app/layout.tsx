@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/layout/NavBar";
-import { SessionProvider } from "next-auth/react";
-import { auth } from "@/auth";
 import { CartProvider } from "@/components/context/CartContext";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { auth } from "@/app/api/auth/[...nextauth]/route"; 
+import SessionProviderWrapper from "@/components/providers/sessionProviderWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,29 +23,43 @@ export const metadata: Metadata = {
   description: "Seller dashboard and artisan marketplace.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Get session on the server using your existing auth function
   const session = await auth();
+  
   // Extract user ID from session if available for CartProvider context
-  const buyerId = session?.user?.id || session?.user?.sub || null;
+  const buyerId = session?.user?.id || null;
 
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gray-50`}
       >
-        <SessionProvider session={session}>
+        {/* Client component wrapper for SessionProvider */}
+        <SessionProviderWrapper session={session}>
           <CartProvider buyerId={buyerId}>
             <NavBar />
             <main>
               {children}
-              <ToastContainer />
+              <ToastContainer 
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+              />
             </main>
           </CartProvider>
-        </SessionProvider>
+        </SessionProviderWrapper>
       </body>
     </html>
   );

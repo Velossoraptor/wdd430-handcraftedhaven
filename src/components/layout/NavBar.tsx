@@ -3,26 +3,75 @@
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import SignOutButton from '@/components/signout-button';
 import { useCartContext } from '../context/CartContext';
 import { ShoppingCart } from 'lucide-react';
 
+// Define a type for your extended user
+interface ExtendedUser {
+  id: string;
+  email?: string | null;
+  name?: string | null;
+  account_type?: string;
+}
+
 export default function NavBar() {
   const { data: session, status } = useSession();
-   const [isMenuOpen, setIsMenuOpen] = useState(false);
-   const { cartCount } = useCartContext();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const { cartCount } = useCartContext();
 
-  const handleSignOut = () => {
-    signOut({ callbackUrl: '/' });
+  // Get user display name
+  const getUserDisplayName = () => {
+    if (!session?.user) return '';
+    
+    if (session.user.name) return session.user.name;
+    if (session.user.email) {
+      const email = session.user.email;
+      return email.split('@')[0];
+    }
+    return '';
   };
+
+  // Get account type from session - type-safe version
+  const getAccountType = () => {
+    if (!session?.user) return '';
+    
+    // Type assertion without any
+    const user = session.user as ExtendedUser;
+    return user.account_type || '';
+  };
+
+  // Show loading state for entire navbar
+  if (status === 'loading') {
+    return (
+      <nav className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <div className="text-xl font-bold text-gray-900 bg-gray-200 animate-pulse w-40 h-6 rounded"></div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="w-20 h-9 bg-gray-200 animate-pulse rounded-md"></div>
+              <div className="relative">
+                <div className="w-16 h-9 bg-gray-200 animate-pulse rounded-md"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo*/}
+          {/* Logo/Brand */}
           <div className="flex items-center">
-            <Link
-              href="/"
+            <Link 
+              href="/" 
               className="text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors"
             >
               Handcrafted Haven
@@ -31,21 +80,33 @@ export default function NavBar() {
 
           {/* Desktop Navigation - Centered */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/"
-              className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
+            <Link 
+              href="/" 
+              className={`${
+                pathname === '/' 
+                  ? 'text-amber-600 font-semibold' 
+                  : 'text-gray-700 hover:text-gray-900'
+              } transition-colors font-medium`}
             >
               Home
             </Link>
-            <Link
-              href="/products"
-              className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
+            <Link 
+              href="/products" 
+              className={`${
+                pathname === '/products' 
+                  ? 'text-amber-600 font-semibold' 
+                  : 'text-gray-700 hover:text-gray-900'
+              } transition-colors font-medium`}
             >
               Marketplace
             </Link>
-            <Link
-              href="/about"
-              className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
+            <Link 
+              href="/about" 
+              className={`${
+                pathname === '/about' 
+                  ? 'text-amber-600 font-semibold' 
+                  : 'text-gray-700 hover:text-gray-900'
+              } transition-colors font-medium`}
             >
               About
             </Link>
@@ -53,12 +114,7 @@ export default function NavBar() {
 
           {/* Desktop Auth Buttons - Right Side */}
           <div className="hidden md:flex items-center space-x-4">
-            {status === "loading" ? (
-              <div className="flex space-x-3">
-                <div className="w-20 h-9 bg-gray-200 animate-pulse rounded-md"></div>
-                <div className="w-20 h-9 bg-gray-200 animate-pulse rounded-md"></div>
-              </div>
-            ) : session ? (
+            {session ? (
               <div className="flex items-center space-x-4">
                 <span className="text-gray-700 text-sm">
                   Welcome, {getUserDisplayName()}
@@ -68,7 +124,7 @@ export default function NavBar() {
                     </span>
                   )}
                 </span>
-                <Link
+                <Link 
                   href="/dashboard"
                   className={`${
                     pathname === '/dashboard' 
@@ -78,16 +134,12 @@ export default function NavBar() {
                 >
                   Dashboard
                 </Link>
-                <button
-                  onClick={handleSignOut}
-                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors font-medium text-sm"
-                >
-                  Sign Out
-                </button>
+                {/* Use the SignOutButton component here */}
+                <SignOutButton />
               </div>
             ) : (
               <div className="flex items-center space-x-3">
-                <Link
+                <Link 
                   href="/login"
                   className={`${
                     pathname === '/login' 
@@ -97,22 +149,28 @@ export default function NavBar() {
                 >
                   Login
                 </Link>
-                <Link
+                <Link 
                   href="/signup"
-                  className="bg-amber-500 text-white px-4 py-2 rounded-md hover:bg-amber-600 transition transition-background font-medium text-sm"
+                  className={`${
+                    pathname === '/signup' 
+                      ? 'bg-amber-600' 
+                      : 'bg-amber-500 hover:bg-amber-600'
+                  } text-white px-4 py-2 rounded-md transition-colors font-medium text-sm`}
                 >
                   Sign Up
                 </Link>
               </div>
             )}
+            
+            {/* Shopping Cart Icon */}
             <div>
               <Link
                 href="/cart"
-                className="relative flex items-center gap-1 font-medium text-black"
+                className="relative flex items-center gap-2 font-medium text-black"
               >
-                <ShoppingCart className="h-4 w-4" />
+                <ShoppingCart className="h-5 w-5" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 md:right-6 h-4 w-4 text-xs bg-amber-500 text-white rounded-full flex items-center justify-center border-2 border-white shadow">
+                  <span className="absolute -top-2 -right-2 h-5 w-5 text-xs bg-amber-500 text-white rounded-full flex items-center justify-center border-2 border-white shadow">
                     {cartCount}
                   </span>
                 )}
@@ -123,31 +181,16 @@ export default function NavBar() {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
-            <button
+            <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-amber-500"
               aria-label="Toggle menu"
             >
-              <svg
-                className="h-6 w-6"
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
+              <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                 {isMenuOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 )}
               </svg>
             </button>
@@ -159,36 +202,60 @@ export default function NavBar() {
           <div className="md:hidden border-t border-gray-200 pt-4 pb-3">
             <div className="flex flex-col space-y-3">
               {/* Mobile Navigation Links */}
-              <Link
-                href="/"
-                className="text-gray-700 hover:text-gray-900 transition-colors font-medium px-3 py-2"
+              <Link 
+                href="/" 
+                className={`${
+                  pathname === '/' 
+                    ? 'text-amber-600 font-semibold' 
+                    : 'text-gray-700 hover:text-gray-900'
+                } transition-colors font-medium px-3 py-2`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
               </Link>
-              <Link
-                href="/products"
-                className="text-gray-700 hover:text-gray-900 transition-colors font-medium px-3 py-2"
+              <Link 
+                href="/products" 
+                className={`${
+                  pathname === '/products' 
+                    ? 'text-amber-600 font-semibold' 
+                    : 'text-gray-700 hover:text-gray-900'
+                } transition-colors font-medium px-3 py-2`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 Marketplace
               </Link>
-              <Link
-                href="/about"
-                className="text-gray-700 hover:text-gray-900 transition-colors font-medium px-3 py-2"
+              <Link 
+                href="/about" 
+                className={`${
+                  pathname === '/about' 
+                    ? 'text-amber-600 font-semibold' 
+                    : 'text-gray-700 hover:text-gray-900'
+                } transition-colors font-medium px-3 py-2`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
               </Link>
 
+              {/* Shopping Cart in Mobile Menu */}
+              <div className="border-t border-gray-200 pt-3">
+                <Link
+                  href="/cart"
+                  className="flex items-center gap-2 text-gray-700 hover:text-gray-900 font-medium px-3 py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <ShoppingCart className="h-5 w-5" />
+                  Cart
+                  {cartCount > 0 && (
+                    <span className="ml-auto h-5 w-5 text-xs bg-amber-500 text-white rounded-full flex items-center justify-center">
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
+              </div>
+
               {/* Mobile Auth Section */}
               <div className="border-t border-gray-200 pt-4 mt-2">
-                {status === "loading" ? (
-                  <div className="space-y-2">
-                    <div className="h-9 bg-gray-200 animate-pulse rounded-md"></div>
-                    <div className="h-9 bg-gray-200 animate-pulse rounded-md"></div>
-                  </div>
-                ) : session ? (
+                {session ? (
                   <div className="space-y-3">
                     <div className="px-3 py-2">
                       <p className="text-sm text-gray-500">Signed in as</p>
@@ -203,7 +270,7 @@ export default function NavBar() {
                         </p>
                       )}
                     </div>
-                    <Link
+                    <Link 
                       href="/dashboard"
                       className={`block w-full ${
                         pathname === '/dashboard' 
@@ -214,19 +281,14 @@ export default function NavBar() {
                     >
                       Dashboard
                     </Link>
-                    <button
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                        handleSignOut();
-                      }}
-                      className="block w-full bg-gray-200 text-gray-700 px-3 py-2 rounded-md text-center hover:bg-gray-300 transition-colors font-medium"
-                    >
-                      Sign Out
-                    </button>
+                    {/* Use SignOutButton component here too */}
+                    <div onClick={() => setIsMenuOpen(false)}>
+                      <SignOutButton />
+                    </div>
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <Link
+                    <Link 
                       href="/login"
                       className={`block w-full ${
                         pathname === '/login' 
@@ -237,7 +299,7 @@ export default function NavBar() {
                     >
                       Login
                     </Link>
-                    <Link
+                    <Link 
                       href="/signup"
                       className={`block w-full ${
                         pathname === '/signup' 

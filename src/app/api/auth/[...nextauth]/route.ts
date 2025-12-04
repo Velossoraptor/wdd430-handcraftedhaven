@@ -1,8 +1,10 @@
+
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { getUserByEmail, verifyPassword } from "@/app/lib/data";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+// Create the auth configuration
+const authConfig = NextAuth({
   providers: [
     Credentials({
       name: "credentials",
@@ -79,5 +81,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   trustHost: true,
 });
+
+
+export const { handlers, auth, signIn, signOut } = authConfig;
+
 
 export const { GET, POST } = handlers;
