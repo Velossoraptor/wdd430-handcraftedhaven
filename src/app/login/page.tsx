@@ -1,5 +1,5 @@
-//import Logo from '@/app/ui/logo';
-import LoginForm from '@/components/ui/login-form'; // Now using the correct login form
+
+import LoginForm from '@/components/ui/login-form'; 
 import { Suspense } from 'react';
 import { Metadata } from 'next';
 

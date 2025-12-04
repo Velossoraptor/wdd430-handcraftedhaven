@@ -1,22 +1,28 @@
-// types/next-auth.d.ts
-import { UserRole } from '@/app/lib/definitions';
-import NextAuth from 'next-auth';
+import "next-auth";
 
-declare module 'next-auth' {
+declare module "next-auth" {
+  /**
+   * Extend the built-in User type
+   */
   interface User {
-    role: UserRole;
+    id: string; // Add id to User
+    account_type?: string;
   }
 
+  /**
+   * Extend the built-in Session type
+   */
   interface Session {
-    user: {
-      id: string;
-      role: UserRole;
-    } & DefaultSession['user'];
+    user: User; // This uses our extended User type
   }
 }
 
-declare module 'next-auth/jwt' {
+declare module "next-auth/jwt" {
+  /**
+   * Extend the built-in JWT type
+   */
   interface JWT {
-    role: UserRole;
+    id: string;
+    account_type?: string;
   }
 }

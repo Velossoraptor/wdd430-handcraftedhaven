@@ -12,7 +12,8 @@ import { useActionState } from 'react';
 import { signup } from '@/app/lib/actions';
 
 export default function SignupForm() {
-  const [state, formAction, isPending] = useActionState(signup, undefined);
+  // Use proper typing for useActionState
+  const [state, formAction, isPending] = useActionState(signup, null);
 
   return (
     <form action={formAction} className="space-y-3"> 
@@ -21,32 +22,60 @@ export default function SignupForm() {
           Welcome to our website, Please create your account
         </h1>
         <div className="w-full">
+          {/* First Name Field */}
           <div>
             <label
               className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-              htmlFor="name"
+              htmlFor="fname"
             >
-              Name
+              First Name
             </label>
             <div className="relative">
               <input
                 className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                id="name"
+                id="fname"
                 type="text"
-                name="name"
-                placeholder="Enter your name"
+                name="fname"
+                placeholder="Enter your first name"
                 required
                 disabled={isPending}
               />
               <UserIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
-            {state?.errors?.name && (
+            {state?.errors?.fname && (
               <div className="text-sm text-red-500 mt-1">
-                {state.errors.name.join(', ')}
+                {state.errors.fname.join(', ')}
               </div>
             )}
           </div>
-          
+
+          {/* Last Name Field */}
+          <div className="mt-4">
+            <label
+              className="mb-3 mt-5 block text-xs font-medium text-gray-900"
+              htmlFor="lname"
+            >
+              Last Name
+            </label>
+            <div className="relative">
+              <input
+                className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+                id="lname"
+                type="text"
+                name="lname"
+                placeholder="Enter your last name"
+                required
+                disabled={isPending}
+              />
+              <UserIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            </div>
+            {state?.errors?.lname && (
+              <div className="text-sm text-red-500 mt-1">
+                {state.errors.lname.join(', ')}
+              </div>
+            )}
+          </div>
+
           <div className="mt-4">
             <label
               className="mb-3 mt-5 block text-xs font-medium text-gray-900"
@@ -76,16 +105,16 @@ export default function SignupForm() {
           <div className="mt-4">
             <label
               className="mb-3 mt-5 block text-xs font-medium text-gray-900"
-              htmlFor="password"
+              htmlFor="pword"
             >
               Password
             </label>
             <div className="relative">
               <input
                 className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                id="password"
+                id="pword"
                 type="password"
-                name="password"
+                name="pword"
                 placeholder="Enter password"
                 required
                 minLength={8}
@@ -93,26 +122,26 @@ export default function SignupForm() {
               />
               <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
-            {state?.errors?.password && (
+            {state?.errors?.pword && (
               <div className="text-sm text-red-500 mt-1">
-                {state.errors.password.join(', ')}
+                {state.errors.pword.join(', ')}
               </div>
             )}
           </div>
           
-          {/* Role Selection Field */}
+          {/* Account Type Selection Field */}
           <div className="mt-4">
             <label 
               className="mb-3 mt-5 block text-xs font-medium text-gray-900" 
-              htmlFor="role"
+              htmlFor="account_type"
             >
               Account Type
             </label>
             <div className="relative">
               <select
                 className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
-                id="role"
-                name="role"
+                id="account_type"
+                name="account_type"
                 required
                 disabled={isPending}
               >
@@ -122,9 +151,9 @@ export default function SignupForm() {
               </select>
               <UserIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
             </div>
-            {state?.errors?.role && (
+            {state?.errors?.account_type && (
               <div className="text-sm text-red-500 mt-1">
-                {state.errors.role.join(', ')}
+                {state.errors.account_type.join(', ')}
               </div>
             )}
           </div>

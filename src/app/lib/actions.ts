@@ -1,50 +1,27 @@
 'use server';
 
-import { signIn } from '@/auth';
-import { AuthError } from 'next-auth';
-import bcrypt from 'bcrypt';
-import postgres from 'postgres';
-import { SignupFormSchema, type FormState } from '@/app/lib/definitions';
+import bcrypt from 'bcryptjs';
 import { redirect } from 'next/navigation';
-import { signOut } from '@/auth';
+import { SignupFormSchema, type FormState } from '@/app/lib/definitions';
+import postgres from 'postgres';
 
-export async function authenticate(
-  prevState: string | undefined,
-  formData: FormData,
-) {
-  try {
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
-    const callbackUrl = formData.get('redirectTo') as string || '/dashboard';
+// Initialize postgres client
+const sql = postgres(process.env.DATABASE_URL!, {
+  ssl: 'require',
+  idle_timeout: 20,
+  max_lifetime: 60 * 30,
+});
 
-    await signIn('credentials', {
-      email,
-      password,
-      redirectTo: callbackUrl,
-    });
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case 'CredentialsSignin':
-          return 'Invalid credentials.';
-        default:
-          return 'Something went wrong.';
-      }
-    }
-    // This will only be reached if redirect fails
-    throw error;
-  }
-}
-
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
-
-export async function signup(state: FormState, formData: FormData) {
+export async function signup(state: FormState | null, formData: FormData): Promise<FormState> {
   // Validate form fields
   const validatedFields = SignupFormSchema.safeParse({
-    name: formData.get('name'),
+    fname: formData.get('fname'),
+    lname: formData.get('lname'),
     email: formData.get('email'),
-    password: formData.get('password'),
-    role: formData.get('role'),
+    account_type: formData.get('account_type'),
+    pword: formData.get('pword'),
+    confirmPword: formData.get('confirmPword'),
+    terms: formData.get('terms') === 'on',
   });
 
   // If any form fields are invalid, return early
@@ -54,14 +31,15 @@ export async function signup(state: FormState, formData: FormData) {
     };
   }
 
-  const { name, email, password, role } = validatedFields.data;
+  const { fname, lname, email, account_type, pword } = validatedFields.data;
 
   try {
-    // Check if user already exists
+    // Checking if user already exists
     const existingUser = await sql`
       SELECT id FROM users WHERE email = ${email}
     `;
 
+    
     if (existingUser.length > 0) {
       return {
         message: 'User already exists with this email.',
@@ -69,12 +47,25 @@ export async function signup(state: FormState, formData: FormData) {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(pword, 10);
 
     // Insert new user into the database
     await sql`
-      INSERT INTO users (name, email, password, role)
-      VALUES (${name}, ${email}, ${hashedPassword}, ${role})
+      INSERT INTO users (
+        fname, 
+        lname, 
+        email, 
+        account_type, 
+        pword,
+        created_at
+      ) VALUES (
+        ${fname}, 
+        ${lname}, 
+        ${email}, 
+        ${account_type}, 
+        ${hashedPassword},
+        NOW()
+      )
     `;
 
   } catch (error) {
@@ -88,6 +79,92 @@ export async function signup(state: FormState, formData: FormData) {
   redirect('/login');
 }
 
-export async function signOutAction() {
-  await signOut({ redirectTo: '/' });
+// Admin-only actions
+export async function createUserByAdmin(formData: FormData) {
+  try {
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const account_type = formData.get('account_type') as string;
+    const name = formData.get('name') as string;
+
+    if (!email || !password) {
+      throw new Error('Email and password are required');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await sql`
+      INSERT INTO users (email, pword, account_type, name, created_at)
+      VALUES (${email}, ${hashedPassword}, ${account_type || 'user'}, ${name || null}, NOW())
+    `;
+
+    return { success: true, message: 'User created successfully' };
+  } catch (error) {
+    console.error('Error creating user:', error);
+    return { success: false, message: 'Failed to create user' };
+  }
+}
+
+export async function updateUserPassword(userId: string, newPassword: string) {
+  try {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await sql`
+      UPDATE users 
+      SET pword = ${hashedPassword}, updated_at = NOW()
+      WHERE id = ${userId}
+    `;
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating password:', error);
+    return { success: false };
+  }
+}
+
+export async function deleteUser(userId: string) {
+  try {
+    await sql`
+      DELETE FROM users WHERE id = ${userId}
+    `;
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    return { success: false };
+  }
+}
+
+
+export async function getUserByEmail(email: string) {
+  try {
+    
+    const result = await sql`
+      SELECT * FROM users WHERE email = ${email}
+    `;
+    
+    return result[0] || null;
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return null;
+  }
+}
+
+// Utility function to verify password
+export async function verifyPassword(password: string, hashedPassword: string) {
+  return bcrypt.compare(password, hashedPassword);
+}
+
+// Additional helper function
+export async function getUserById(id: string) {
+  try {
+    const result = await sql`
+      SELECT id, email, fname, lname, account_type, created_at 
+      FROM users WHERE id = ${id}
+    `;
+    return result[0] || null;
+  } catch (error) {
+    console.error('Error fetching user by ID:', error);
+    return null;
+  }
 }

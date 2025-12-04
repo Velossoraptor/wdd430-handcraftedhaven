@@ -1,70 +1,70 @@
-import * as z from 'zod'
+import { z } from 'zod';
 
-// User Role Type
-export type UserRole = 'customer' | 'seller';
-
-// User Interface
-export interface User {
+export type User = {
   id: string;
-  name: string;
+  fname: string;
+  lname: string;
   email: string;
-  password: string;
-  role: UserRole;
-}
-
-// Session Payload Type
-export type SessionPayload = {
-  userId: string;
-  email: string;
-  name?: string;
-  role: UserRole;
+  account_type: 'customer' | 'seller' | 'admin';
+  pword?: string; // Hashed password
+  created_at: string;
+  
 };
 
-// Signup Form Schema with Role field
+// Signup Form Schema
 export const SignupFormSchema = z.object({
-  name: z
+  fname: z.string().min(1, 'First name is required'),
+  lname: z.string().min(1, 'Last name is required'),
+  email: z.string().email('Invalid email address'),
+  phone: z.string().optional(),
+  
+  account_type: z.enum(['customer', 'seller']).default('customer'),
+  pword: z
     .string()
-    .min(2, { message: 'Name must be at least 2 characters long.' })
-    .trim(),
-  email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
-  password: z
-    .string()
-    .min(8, { message: 'Be at least 8 characters long' })
-    .regex(/[a-zA-Z]/, { message: 'Contain at least one letter.' })
-    .regex(/[0-9]/, { message: 'Contain at least one number.' })
-    .regex(/[^a-zA-Z0-9]/, {
-      message: 'Contain at least one special character.',
-    })
-    .trim(),
-  role: z.string().refine((val) => ['customer', 'seller'].includes(val), {
-    message: 'Please select a valid role (customer or seller).',
-  })
-})
-
-// Form State Type
-export type FormState =
-  | {
-      errors?: {
-        name?: string[]
-        email?: string[]
-        password?: string[]
-        role?: string[]
-      }
-      message?: string
-    }
-  | undefined
-
-// Login Form Schema
-export const LoginFormSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
-  password: z.string().min(1, { message: 'Password is required.' }),
-})
-
-// Extended User types for specific roles
-export interface Customer extends User {
-  role: 'customer';
+    .min(6, 'Password must be at least 6 characters'),
+  
 }
+);
 
-export interface Seller extends User {
-  role: 'seller';
-}
+export type FormState = {
+  errors?: {
+    fname?: string[];
+    lname?: string[];
+    email?: string[];
+    phone?: string[];
+    
+    account_type?: string[];
+    pword?: string[];
+    confirmPword?: string[];
+    terms?: string[];
+  };
+  message?: string;
+};
+
+
+export type SessionData = {
+  userId: string;
+  email: string;
+  accountType: string;
+  expires: Date;
+};
+
+export type Product = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  seller_id: string;
+  created_at: string;
+  updated_at: string;
+};
+
+
+export type Order = {
+  id: string;
+  customer_id: string;
+  total_amount: number;
+  status: 'pending' | 'processing' | 'completed' | 'cancelled';
+  created_at: string;
+  updated_at: string;
+};
