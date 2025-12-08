@@ -71,12 +71,6 @@ export default function NavBar() {
               Home
             </Link>
             <Link
-              href="/marketplace"
-              className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
-            >
-              Marketplace
-            </Link>
-            <Link
               href="/about"
               className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
             >
@@ -180,13 +174,6 @@ export default function NavBar() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
-              </Link>
-              <Link
-                href="/products"
-                className="text-gray-700 hover:text-gray-900 transition-colors font-medium px-3 py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Marketplace
               </Link>
               <Link
                 href="/about"
