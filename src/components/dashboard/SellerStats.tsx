@@ -64,7 +64,7 @@ export default function SellerStats({ data }: SellerStatsProps) {
             <p className="text-2xl font-bold text-gray-900 leading-none">
               {card.value}
             </p>
-            <p className="text-sm font-medium text-gray-500 mt-1">
+            <p className="text-sm font-medium text-gray-700 mt-1">
               {card.title}
             </p>
           </div>

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifySession } from "@/_lib/session";
 
-export async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const session = await verifySession();
   const path = request.nextUrl.pathname;
 

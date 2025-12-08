@@ -49,14 +49,14 @@ export default function NavBar() {
   };
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
+    <nav className="bg-white shadow-sm border-b border-zinc-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
           <div className="flex items-center">
             <Link
               href="/"
-              className="text-xl font-bold text-gray-900 hover:text-gray-700 transition-colors"
+              className="text-xl font-bold text-zinc-900 hover:text-zinc-700 transition-colors"
             >
               Handcrafted Haven
             </Link>
@@ -66,19 +66,13 @@ export default function NavBar() {
           <div className="hidden md:flex items-center space-x-8">
             <Link
               href="/"
-              className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
+              className="text-zinc-700 hover:text-zinc-900 transition-colors font-medium"
             >
               Home
             </Link>
             <Link
-              href="/products"
-              className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
-            >
-              Marketplace
-            </Link>
-            <Link
               href="/about"
-              className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
+              className="text-zinc-700 hover:text-zinc-900 transition-colors font-medium"
             >
               About
             </Link>
@@ -88,18 +82,18 @@ export default function NavBar() {
           <div className="hidden md:flex items-center space-x-4">
             {loggedInUser && (
               <div className="flex items-center space-x-4">
-                <span className="text-gray-700 text-sm">
+                <span className="text-zinc-700 text-sm">
                   Welcome, {loggedInUser}
                 </span>
                 <Link
                   href="/dashboard"
-                  className="bg-amber-500 text-white px-4 py-2 rounded-md hover:bg-amber-600 transition-colors font-medium text-sm"
+                  className="bg-orange-500 font-medium text-black px-4 py-2 rounded-md hover:bg-amber-600 transition-colors font-medium text-sm"
                 >
                   Dashboard
                 </Link>
                 <button
                   onClick={handleSignOut}
-                  className="bg-gray-200 cursor-pointer text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors font-medium text-sm"
+                  className="bg-zinc-200 cursor-pointer text-zinc-700 px-4 py-2 rounded-md hover:bg-zinc-300 transition-colors font-medium text-sm"
                 >
                   Sign Out
                 </button>
@@ -109,13 +103,13 @@ export default function NavBar() {
               <div className="flex items-center space-x-3">
                 <Link
                   href="/login"
-                  className="text-gray-700 hover:text-gray-900 transition-colors font-medium text-sm"
+                  className="text-zinc-700 hover:text-zinc-900 transition-colors font-medium text-sm"
                 >
                   Login
                 </Link>
                 <Link
                   href="/signup"
-                  className="bg-amber-500 text-white px-4 py-2 rounded-md hover:bg-amber-600 transition transition-background font-medium text-sm"
+                  className="bg-orange-500 text-black px-4 py-2 rounded-md hover:bg-amber-600 transition transition-background font-medium text-sm"
                 >
                   Sign Up
                 </Link>
@@ -124,7 +118,7 @@ export default function NavBar() {
             <div>
               <Link
                 href="/cart"
-                className="relative flex items-center gap-1 font-medium text-black"
+                className="relative flex items-center gap-1 font-medium text-zinc"
               >
                 <ShoppingCart className="h-4 w-4" />
                 {cartCount > 0 && (
@@ -141,7 +135,7 @@ export default function NavBar() {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-amber-500"
+              className="inline-flex items-center justify-center p-2 rounded-md text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-amber-500"
             >
               <svg
                 className="h-6 w-6"
@@ -171,38 +165,38 @@ export default function NavBar() {
 
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-200 pt-4 pb-3">
+          <div className="md:hidden border-t border-zinc-200 pt-4 pb-3">
             <div className="flex flex-col space-y-3">
               {/* Mobile Navigation Links */}
               <Link
                 href="/"
-                className="text-gray-700 hover:text-gray-900 transition-colors font-medium px-3 py-2"
+                className="text-zinc-700 hover:text-zinc-900 transition-colors font-medium px-3 py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
               </Link>
               <Link
                 href="/products"
-                className="text-gray-700 hover:text-gray-900 transition-colors font-medium px-3 py-2"
+                className="text-zinc-700 hover:text-zinc-900 transition-colors font-medium px-3 py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Marketplace
               </Link>
               <Link
                 href="/about"
-                className="text-gray-700 hover:text-gray-900 transition-colors font-medium px-3 py-2"
+                className="text-zinc-700 hover:text-zinc-900 transition-colors font-medium px-3 py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
               </Link>
 
               {/* Mobile Auth Section */}
-              <div className="border-t border-gray-200 pt-4 mt-2">
+              <div className="border-t border-zinc-200 pt-4 mt-2">
                 {loggedInUser ? (
                   <div className="space-y-3">
                     <div className="px-3 py-2">
-                      <p className="text-sm text-gray-500">Signed in as</p>
-                      <p className="text-sm font-medium text-gray-900">
+                      <p className="text-sm text-zinc-500">Signed in as</p>
+                      <p className="text-sm font-medium text-zinc-900">
                         {loggedInUser}
                       </p>
                     </div>
@@ -218,7 +212,7 @@ export default function NavBar() {
                         setIsMenuOpen(false);
                         handleSignOut();
                       }}
-                      className="block cursor-pointer w-full bg-gray-200 text-gray-700 px-3 py-2 rounded-md text-center hover:bg-gray-300 transition-colors font-medium"
+                      className="block cursor-pointer w-full bg-zinc-200 text-zinc-700 px-3 py-2 rounded-md text-center hover:bg-zinc-300 transition-colors font-medium"
                     >
                       Sign Out
                     </button>
@@ -227,7 +221,7 @@ export default function NavBar() {
                   <div className="space-y-3">
                     <Link
                       href="/login"
-                      className="block w-full text-gray-700 border border-gray-300 px-3 py-2 rounded-md text-center hover:bg-gray-50 transition-colors font-medium"
+                      className="block w-full text-zinc-700 border border-zinc-300 px-3 py-2 rounded-md text-center hover:bg-zinc-50 transition-colors font-medium"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Login

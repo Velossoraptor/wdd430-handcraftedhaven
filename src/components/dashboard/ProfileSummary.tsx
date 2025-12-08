@@ -34,7 +34,7 @@ export default function ProfileSummary() {
           <p className="text-5xl font-bold text-gray-900">
             {averageRating.toFixed(1)}
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-gray-700 mt-1">
             Overall Shop Rating
           </p>
         </div>
@@ -45,7 +45,7 @@ export default function ProfileSummary() {
           {/* 🟢 FIX: Updated Link usage */}
           <Link 
             href="/dashboard/reviews" 
-            className="text-sm text-amber-700 hover:text-amber-900 font-medium transition duration-150 mt-1 block"
+            className="text-sm text-red-800 hover:text-amber-900 font-medium transition duration-150 mt-1 block"
           >
             View All
           </Link>
