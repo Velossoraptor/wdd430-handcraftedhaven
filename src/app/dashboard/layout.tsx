@@ -78,9 +78,9 @@ export default function DashboardLayout({
                 key={link.label}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`hover:bg-amber-100 dark:hover:bg-amber-900 p-2 rounded-lg transition duration-150 ease-in-out font-medium flex items-center ${
+                className={`hover:bg-[#ff6900] hover:text-black dark:hover:bg-amber-900 p-2 rounded-lg transition duration-150 ease-in-out font-medium flex items-center ${
                   pathname === link.href
-                    ? "bg-amber-600 text-white shadow-md" // Active state
+                    ? "bg-[#ff6900] text-black shadow-md" // Active state
                     : "text-gray-700 dark:text-gray-300 hover:text-amber-700" // Inactive state
                 }`}
               >

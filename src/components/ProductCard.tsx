@@ -31,7 +31,7 @@ export default function ProductCard({
         </div>
 
         {/* 🏷️ Product Details */}
-        <p className="text-sm text-gray-500 mt-1">{category}</p>
+        <p className="text-sm text-gray-700 mt-1">{category}</p>
         <h3 className="text-lg font-semibold truncate mt-1">{product_name}</h3>
         <p className="text-xl text-amber-700 font-bold mt-2">${price}</p>
       </Link>

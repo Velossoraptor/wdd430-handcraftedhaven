@@ -16,7 +16,7 @@ export default function QuickActions() {
           <Link 
             key={action.name}
             href={action.href}
-            className="flex items-center p-3 rounded-lg bg-amber-50 hover:bg-amber-100 transition duration-150 group"
+            className="flex items-center p-3 rounded-lg bg-amber-100 hover:bg-amber-100 transition duration-150 group"
             // WCAG: Making the whole block a clickable link with proper focus
           >
             <action.icon className="w-5 h-5 text-amber-700 mr-3 shrink-0" aria-hidden="true" />
@@ -24,7 +24,7 @@ export default function QuickActions() {
               <p className="font-medium text-gray-900 group-hover:text-amber-800">
                 {action.name}
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-700">
                 {action.description}
               </p>
             </div>

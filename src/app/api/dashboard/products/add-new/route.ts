@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import pool, { createListings } from "@/_lib/vendor/db";
-//import { verifySession } from "@/_lib/vendor/session";
+import { verifySession } from "@/_lib/session";
 import { saveImageToCloudinary } from "@/_lib/SaveImageToCloud";
 import { revalidatePath } from "next/cache";
 
@@ -10,14 +10,14 @@ interface FormDataFields {
 }
 
 export async function POST(req: NextRequest) {
-  //const session = await verifySession();
+  const session = await verifySession();
 
-  //if (!session?.authenticated || !session.userId) {
-  //return NextResponse.json(
-  //{ success: false, message: "Unauthorized" },
-  //{ status: 401 }
-  //);
-  //}
+  if (!session || !session.id) {
+    return NextResponse.json(
+      { success: false, message: "Unauthorized" },
+      { status: 401 }
+    );
+  }
 
   try {
     const formData = await req.formData();

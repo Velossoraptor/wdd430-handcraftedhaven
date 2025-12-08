@@ -4,14 +4,12 @@ import {
   useContext,
   createContext,
   useState,
-  useEffect,
-  useRef,
-  useCallback,
-  ReactNode,
+   useEffect,
+   ReactNode,
 } from "react";
+import React from "react";
 import { toast } from "react-toastify";
 import { getCartFromCookie, setCartCookie } from "@/_lib/buyer/cartCookie";
-import React from "react";
 
 // -------------------------
 // Cart Context
@@ -41,17 +39,12 @@ interface CartContextType {
   removeItem: (item: CartOpItem) => void;
   increaseQuantity: (item: CartOpItem) => void;
   decreaseQuantity: (item: CartOpItem) => void;
-  mergeCartFromServer: (buyerId: string) => Promise<void>;
 }
 
 interface CartProviderProps {
-  buyerId?: string | null;
   children: ReactNode;
 }
 
-// -------------------------
-// Utility Functions
-// -------------------------
 async function getCart(): Promise<CartItem[]> {
   if (typeof window === "undefined") return [];
   try {
@@ -74,7 +67,7 @@ function getCartCount(cart: CartItem[]): number {
 // -------------------------
 // Cart Provider Component
 // -------------------------
-export function CartProvider({ buyerId, children }: CartProviderProps) {
+export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartCount, setCartCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -117,36 +110,6 @@ export function CartProvider({ buyerId, children }: CartProviderProps) {
   }, []);
 
   // -------------------------
-  // Load cart from DB when logged in
-  // -------------------------
-  const loadCartFromDatabase = useCallback(async () => {
-    if (!buyerId) return;
-
-    try {
-      const response = await fetch("/api/buyer/cart/sync", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ buyerId, cart: [] }),
-      });
-
-      const data = await response.json();
-
-      if (data.success && data.cart) {
-        setCart(data.cart);
-        setCartCount(getCartCount(data.cart));
-        await saveCart(data.cart);
-      }
-    } catch {
-      setCart([]);
-      setCartCount(0);
-    }
-  }, [buyerId]);
-
-  useEffect(() => {
-    if (buyerId) loadCartFromDatabase();
-  }, [buyerId, loadCartFromDatabase]);
-
-  // -------------------------
   // Save cart to cookie when cart updates
   // -------------------------
   useEffect(() => {
@@ -154,53 +117,6 @@ export function CartProvider({ buyerId, children }: CartProviderProps) {
     setCartCount(getCartCount(cart));
   }, [cart]);
 
-  // -------------------------
-  // Sync timer
-  // -------------------------
-  const syncTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  function scheduleSync() {
-    if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
-
-    syncTimerRef.current = setTimeout(() => {
-      syncCartToServer();
-    }, 60);
-  }
-
-  const syncCartToServer = useCallback(async () => {
-    if (!buyerId) return;
-
-    const latestCart = await getCart();
-    if (latestCart.length === 0) return;
-
-    try {
-      await fetch("/api/buyer/cart/sync", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ buyerId, cart: latestCart }),
-      });
-    } catch {}
-  }, [buyerId]);
-
-  const syncOperationToServer = useCallback(
-    async (operation: string, item: CartItem) => {
-      if (!buyerId) return;
-
-      try {
-        await fetch("/api/buyer/cart/operations", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ buyerId, operation, item }),
-        });
-      } catch {}
-    },
-    [buyerId]
-  );
-
-  // Helper to map CartOpItem to CartItem or vice versa
-  function findCartItemById(item: CartOpItem): CartItem | undefined {
-    return cart.find((c) => c.listing_id === item.listing_id);
-  }
   function mapAddItemToCartItem(item: CartAddItem): CartItem {
     return {
       ...item,
@@ -221,7 +137,6 @@ export function CartProvider({ buyerId, children }: CartProviderProps) {
     }
     const cartItem = mapAddItemToCartItem(item);
     setCart((prev) => [...prev, cartItem]);
-    buyerId ? syncOperationToServer("add", cartItem) : scheduleSync();
 
     toast.success("Product added successfully");
   };
@@ -229,12 +144,6 @@ export function CartProvider({ buyerId, children }: CartProviderProps) {
   const removeItem = (item: CartOpItem) => {
     setCart((prev) => prev.filter((n) => n.listing_id !== item.listing_id));
 
-    if (buyerId) {
-      const cartItem = findCartItemById(item);
-      if (cartItem) syncOperationToServer("remove", cartItem);
-    } else {
-      scheduleSync();
-    }
     toast.success("Product removed successfully");
   };
 
@@ -245,10 +154,7 @@ export function CartProvider({ buyerId, children }: CartProviderProps) {
           ? { ...n, quantity: (n.quantity || 1) + 1 }
           : n
       );
-      const updatedItem = updated.find((n) => n.listing_id === item.listing_id);
-      if (buyerId && updatedItem)
-        syncOperationToServer("update_quantity", updatedItem);
-      else scheduleSync();
+
       return updated;
     });
     toast.success("Item quantity updated");
@@ -265,43 +171,14 @@ export function CartProvider({ buyerId, children }: CartProviderProps) {
             ? { ...n, quantity: n.quantity - 1 }
             : n
         );
-        const updatedItem = updated.find(
-          (n) => n.listing_id === item.listing_id
-        );
-        if (buyerId && updatedItem)
-          syncOperationToServer("update_quantity", updatedItem);
-        else scheduleSync();
+
         return updated;
       } else {
-        if (buyerId) {
-          const cartItem = findCartItemById(item);
-          if (cartItem) syncOperationToServer("remove", cartItem);
-        } else {
-          scheduleSync();
-        }
         return prev.filter((n) => n.listing_id !== item.listing_id);
       }
     });
     toast.success("Item quantity updated");
   };
-
-  const mergeCartFromServer = useCallback(async (buyerId: string) => {
-    try {
-      const response = await fetch("/api/buyer/cart/cartMerge", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ buyerId }),
-      });
-
-      const data = await response.json();
-
-      if (data.success && data.mergedCart) {
-        setCart(data.mergedCart);
-      }
-    } catch {
-      toast.error("Failed to sync cart");
-    }
-  }, []);
 
   return React.createElement(
     CartContext.Provider,
@@ -315,7 +192,6 @@ export function CartProvider({ buyerId, children }: CartProviderProps) {
         removeItem,
         increaseQuantity,
         decreaseQuantity,
-        mergeCartFromServer,
       },
     },
     children

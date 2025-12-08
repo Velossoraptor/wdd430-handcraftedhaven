@@ -1,5 +1,5 @@
-import { Star } from 'lucide-react';
-import { Review, ReviewProps } from './interfaces';
+import { Star } from "lucide-react";
+import { Review, ReviewProps } from "./interfaces";
 
 export default function reviews({ reviewData }: ReviewProps) {
 	return (
