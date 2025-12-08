@@ -3,7 +3,7 @@ import VendorCard from "./vendorCard";
 import Image from "next/image";
 import { ProductCartActions } from "./ProductCartActionBtns";
 
-export default function ProductSummary({
+export default async function ProductSummary({
   productInfo,
   sellerInfo,
 }: {

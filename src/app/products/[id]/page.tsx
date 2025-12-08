@@ -4,6 +4,7 @@ import ReviewSummary from '@/components/productDetails/reviewSummary';
 import pool from '@/_lib/vendor/db';
 import { NextResponse } from 'next/server';
 import { Review } from '@/components/productDetails/interfaces';
+import { verifySession } from '@/_lib/session';
 
 export default async function generateStaticParams({
 	params,
@@ -47,6 +48,10 @@ export default async function generateStaticParams({
 	const reviews: Review[] = reviewRes.rows;
 	console.log(reviews);
 
+	// Get Session Information
+	const session = await verifySession();
+	const user = session?.id || null;
+
 	return (
 		<main className='min-h-screen bg-amber-50 text-gray-900'>
 			<section className='max-w-7xl mx-auto px-6 py-12'>
@@ -56,7 +61,16 @@ export default async function generateStaticParams({
 				{/* Product Summary; Image, Information, Vendor Card*/}
 				<ProductSummary productInfo={product} sellerInfo={product} />
 				{/* Form to write reviews THIS ID WILL ALWAYS BE JANE CHANGE TO DYNAMIC ONCE I FIGURE OUT WHERE ITS STORED */}
-				<ReviewSummary listingId={productId} customerId="2bc94b1b-ebf0-412a-832e-4c9ea24e7d45"/>
+				{!user ? (
+					<div className='bg-white p-6 rounded-xl shadow-md text-center my-6'>
+						<p className='text-lg font-semibold text-gray-700'>
+							You must be logged in to write a review.
+						</p>
+					</div>
+				) : (
+					<ReviewSummary listingId={productId} customerId={user} />
+				)}
+
 				{/* Load reviews that have already been written */}
 				<Reviews reviewData={reviews} />
 			</section>
