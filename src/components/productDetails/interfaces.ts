@@ -1,15 +1,25 @@
 import { number } from "zod";
 
 export interface Review {
-  id: number;
-  productName: string;
+  id: string;
+  listingId: string;
+  customerId: string;
   rating: number;
-  comment: string;
-  customerName: string;
+  feedback: string;
+  createdAt: Date;
+  updatedAt: Date;
+  fname: string;
+  lname: string;
+  productName: string;
 }
 
 export interface ReviewProps {
   reviewData: Review[];
+}
+
+export interface CreateReviewProps {
+  listingId: string;
+  customerId: string;
 }
 
 export interface ProductSellerInfoProps {

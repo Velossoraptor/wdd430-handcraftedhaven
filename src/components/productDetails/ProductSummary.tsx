@@ -3,7 +3,7 @@ import VendorCard from "./vendorCard";
 import Image from "next/image";
 import { ProductCartActions } from "./ProductCartActionBtns";
 
-export default function ProductSummary({
+export default async function ProductSummary({
   productInfo,
   sellerInfo,
 }: {
@@ -12,9 +12,9 @@ export default function ProductSummary({
 }) {
   return (
     <section className="container mx-auto mb-3">
-      <div className="flex">
+      <div className="flex flex-col sm:flex-row mx-auto justify-evenly bg-white p-10 rounded-2xl shadow-md mb-12 gap-8">
         {/* Left section; Contains product image */}
-        <div className="bg-gradient-to-br from-gray-200 to-gray-300 h-[300px] aspect-square">
+        <div className="mx-auto sm:mx-0 bg-gradient-to-br from-gray-200 to-gray-300 h-[300px] aspect-square">
           <Image
             src={productInfo.product_image}
             alt={`${productInfo.product_name} picture`}
@@ -25,14 +25,14 @@ export default function ProductSummary({
         </div>
 
         {/* Right section; Contains vendor info, and product info */}
-        <div className="w-1/2 flex flex-col justify-between p-6">
+        <div className="flex flex-col justify-between w-full sm:w-1/2 p-2 sm:p-6">
           {/* Top Right Section; Vendor */}
           <div className="self-start">
             <VendorCard sellerInfo={sellerInfo} />
           </div>
 
           {/* Bottom Right Section; Product */}
-          <div className="self-start mt-4">
+          <div className="self-start mt-6 sm:mt-4">
             <div className="mb-4">
               <h1 className="text-2xl font-bold">{productInfo.product_name}</h1>
               <p className="text-xl font-semibold mt-2">${productInfo.price}</p>
