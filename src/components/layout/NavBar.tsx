@@ -71,6 +71,12 @@ export default function NavBar() {
               Home
             </Link>
             <Link
+              href="/marketplace"
+              className="text-gray-700 hover:text-gray-900 transition-colors font-medium"
+            >
+              Marketplace
+            </Link>
+            <Link
               href="/about"
               className="text-zinc-700 hover:text-zinc-900 transition-colors font-medium"
             >
