@@ -4,8 +4,6 @@ import "./globals.css";
 import NavBar from "@/components/layout/NavBar";
 import { CartProvider } from "@/components/context/CartContext";
 import { ToastContainer } from "react-toastify";
-import { redirect } from "next/navigation";
-import { verifySession } from "@/_lib/session";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,15 +26,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   // Extract user ID from session if available for CartProvider context
-  const session = await verifySession();
 
-  const buyerId = session?.id;
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gray-50`}
       >
-        <CartProvider buyerId={buyerId}>
+        <CartProvider>
           <NavBar />
           <main>
             {children}

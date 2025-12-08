@@ -1,10 +1,8 @@
-import DashboardLayout from '@/app/layout/DashboardLayout';
 import SellerStats from '@/components/dashboard/SellerStats';
 import QuickActions from '@/components/dashboard/QuickActions';
 import RecentOrders from '@/components/dashboard/RecentOrders';
 import ProfileSummary from '@/components/dashboard/ProfileSummary';
 
-// Mock data (Replace with actual data fetched from your Node.js backend)
 const mockSellerData = {
   activeListings: 24,
   pendingOrders: 3,
@@ -14,7 +12,6 @@ const mockSellerData = {
 
 export default function SellerDashboardPage() {
   return (
-    <DashboardLayout>
       <div className="p-6 md:p-10 space-y-8 bg-gray-50">
         
         <header>
@@ -55,6 +52,5 @@ export default function SellerDashboardPage() {
         </div>
         
       </div>
-    </DashboardLayout>
   );
 }
