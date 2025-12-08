@@ -7,7 +7,7 @@ export default function reviews({ reviewData }: ReviewProps) {
 			<h3 className='text-xl font-bold mb-6'>Reviews</h3>
 			{/* Need to figure out pagination here so that loading times decrease on products with a lot of reviews */}
 			{reviewData.map((review) => (
-				<div key={review.id} className='border-b last:border-b-0 pb-3'>
+				<div key={review.id} className='border-b last:border-b-0 pb-3 bg-white rounded-2xl p-5'>
 					<div className='flex justify-between items-center'>
 						<span className='font-medium text-sm text-gray-900 truncate'>
 							{review.productName}

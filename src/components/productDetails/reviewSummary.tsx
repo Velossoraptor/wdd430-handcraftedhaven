@@ -29,7 +29,7 @@ export default function ReviewSummary({
 		router.refresh();
 	};
 	return (
-		<div className='space-y-4 overflow-y-auto flex-1  container mx-auto mb-10'>
+		<div className='space-y-4 overflow-y-auto flex-1  container mx-auto mb-10 bg-white p-10 rounded-2xl shadow-md '>
 			<form onSubmit={handleSubmit}>
 				<input type='hidden' name='listing_id' value={listingId} />
 				<input type='hidden' name='customer_id' value={customerId} />

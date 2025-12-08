@@ -32,13 +32,17 @@ export default async function generateStaticParams({
 		);
 	}
 	const product = productRes.rows[0];
-	// Query database for reviews of this produce
+	// Query database for reviews of this product
 	const reviewRes = await pool.query(
 		'SELECT r.id, r.listing_id, r.customer_id, r.rating, r.feedback, r.created_at, r.updated_at, u.fname, u.lname, p.product_name FROM reviews r JOIN users u ON r.customer_id = u.id JOIN products p ON r.listing_id = p.listing_id  WHERE r.listing_id = $1;',
 		[productId]
 	);
 	if (!reviewRes) {
-		// give an error message in the product section
+		// give an error message in the review section
+		return NextResponse.json(
+			{ success: false, message: 'Reviews not found' },
+			{ status: 404 }
+		);
 	}
 	const reviews: Review[] = reviewRes.rows;
 	console.log(reviews);

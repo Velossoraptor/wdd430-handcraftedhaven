@@ -12,7 +12,7 @@ export default function ProductSummary({
 }) {
   return (
     <section className="container mx-auto mb-3">
-      <div className="flex">
+      <div className="flex mx-auto justify-evenly bg-white p-10 rounded-2xl shadow-md mb-12">
         {/* Left section; Contains product image */}
         <div className="bg-gradient-to-br from-gray-200 to-gray-300 h-[300px] aspect-square">
           <Image
@@ -25,7 +25,7 @@ export default function ProductSummary({
         </div>
 
         {/* Right section; Contains vendor info, and product info */}
-        <div className="w-1/2 flex flex-col justify-between p-6">
+        <div className="w-1/2 flex flex-col justify-evenly p-6">
           {/* Top Right Section; Vendor */}
           <div className="self-start">
             <VendorCard sellerInfo={sellerInfo} />
