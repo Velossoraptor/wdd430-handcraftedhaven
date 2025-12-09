@@ -2,7 +2,6 @@ import Reviews from '@/components/productDetails/Reviews';
 import ProductSummary from '@/components/productDetails/ProductSummary';
 import ReviewSummary from '@/components/productDetails/reviewSummary';
 import pool from '@/_lib/vendor/db';
-import { NextResponse } from 'next/server';
 import { Review } from '@/components/productDetails/interfaces';
 import { verifySession } from '@/_lib/session';
 
@@ -16,10 +15,7 @@ export default async function generateStaticParams({
 	const productId = resolvedParams.id;
 
 	if (!productId) {
-		return NextResponse.json(
-			{ success: false, message: 'Product ID is required' },
-			{ status: 400 }
-		);
+		return [];
 	}
 	// Query database for the product
 	const productRes = await pool.query(
@@ -27,10 +23,7 @@ export default async function generateStaticParams({
 		[productId]
 	);
 	if (!productRes) {
-		return NextResponse.json(
-			{ success: false, message: 'Product not found' },
-			{ status: 404 }
-		);
+		return []
 	}
 	const product = productRes.rows[0];
 	// Query database for reviews of this product
@@ -40,10 +33,7 @@ export default async function generateStaticParams({
 	);
 	if (!reviewRes) {
 		// give an error message in the review section
-		return NextResponse.json(
-			{ success: false, message: 'Reviews not found' },
-			{ status: 404 }
-		);
+		return []
 	}
 	const reviews: Review[] = reviewRes.rows;
 	console.log(reviews);
