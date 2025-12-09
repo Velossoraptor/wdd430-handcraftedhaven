@@ -118,11 +118,11 @@ export default function NavBar() {
             <div>
               <Link
                 href="/cart"
-                className="relative flex items-center gap-1 font-medium text-zinc"
+                className="relative flex items-center gap-1 font-medium text-amber-950"
               >
                 <ShoppingCart className="h-4 w-4" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 md:right-6 h-4 w-4 text-xs bg-amber-500 text-white rounded-full flex items-center justify-center border-2 border-white shadow">
+                  <span className="absolute -top-2 -right-2 md:right-6 h-4 w-4 text-xs bg-amber-100 text-amber-950 rounded-full flex items-center justify-center border-2 border-white shadow">
                     {cartCount}
                   </span>
                 )}

@@ -19,10 +19,10 @@ export default function AboutPage() {
         </div>
       </nav>
       <section className="container mx-auto px-6 py-20">
-        <div className="bg-white/80 dark:bg-gray-800/70 rounded-xl shadow-lg p-8 md:p-12">
+        <div className="bg-white/80 dark:bg-gray-800 rounded-xl shadow-lg p-8 md:p-12">
           <header className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl font-extrabold mb-3">About Us</h1>
-            <p className="text-lg text-gray-700 dark:text-gray-300">
+            <h1 className="text-4xl font-extrabold mb-3 dark:text-gray-100">About Us</h1>
+            <p className="text-lg text-gray-700 dark:text-gray-100">
               Handcrafted Haven is a community-driven marketplace celebrating
               artisans and makers. We curate unique, high-quality handmade goods
               and connect creators with customers who value craft.
@@ -31,16 +31,16 @@ export default function AboutPage() {
 
           <div className="mt-10 grid gap-8 md:grid-cols-2 items-start">
             <article className="prose max-w-none dark:prose-invert">
-              <h2 className="text-2xl font-semibold">Our Mission</h2>
-              <p>
+              <h2 className="text-2xl font-semibold dark:text-gray-100">Our Mission</h2>
+              <p className="text-gray-700 dark:text-gray-100">
                 To support independent makers by providing a platform that
                 amplifies their work and helps buyers discover meaningful,
                 responsibly made products. We prioritize fairness, transparency,
                 and sustainability in every connection we facilitate.
               </p>
 
-              <h3 className="mt-6 text-xl font-medium">What We Value</h3>
-              <ul className="list-disc list-inside space-y-2">
+              <h3 className="mt-6 text-xl font-medium text-gray-700 dark:text-gray-100">What We Value</h3>
+              <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-100">
                 <li>Quality craftsmanship</li>
                 <li>Transparent, fair practices</li>
                 <li>Sustainable materials and processes</li>
@@ -50,7 +50,7 @@ export default function AboutPage() {
 
             <aside className="flex flex-col gap-6">
               <div className="rounded-lg border border-gray-100 p-6 bg-amber-50">
-                <h4 className="text-lg font-semibold mb-2">Why choose us?</h4>
+                <h4 className="text-lg font-semibold mb-2 ">Why choose us?</h4>
                 <p className="text-sm text-gray-700">
                   Every item is selected with care. We spotlight makers who
                   create with intention, use quality materials, and treat
@@ -75,7 +75,7 @@ export default function AboutPage() {
                 </Link>
               </div>
 
-              <div className="rounded-lg p-6 bg-white/50 border border-dashed border-gray-200 text-sm text-gray-600">
+              <div className="rounded-lg p-6 bg-white/80 border border-dashed border-gray-200 text-sm text-gray-600 dark:text-gray-950">
                 <strong className="block mb-1">Community</strong>
                 <p>Join our newsletter and maker events to stay connected.</p>
               </div>
