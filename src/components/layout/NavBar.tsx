@@ -182,6 +182,20 @@ export default function NavBar() {
               >
                 About
               </Link>
+              <div>
+                <Link
+                  href="/cart"
+                  className="relative flex items-center gap-1 font-medium text-zinc"
+                >
+                  <ShoppingCart className="h-4 w-4" />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 md:right-6 h-4 w-4 text-xs bg-amber-500 text-white rounded-full flex items-center justify-center border-2 border-white shadow">
+                      {cartCount}
+                    </span>
+                  )}
+                  <span className="hidden md:block">Cart</span>
+                </Link>
+              </div>
 
               {/* Mobile Auth Section */}
               <div className="border-t border-zinc-200 pt-4 mt-2">
