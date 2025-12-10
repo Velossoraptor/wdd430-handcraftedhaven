@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 /*********** Lucid icon***********/
-import { X, Menu } from "lucide-react";
+import { LogOut, X, Menu } from "lucide-react";
 
 export default function DashboardLayout({
   children,
@@ -20,15 +20,28 @@ export default function DashboardLayout({
 
   // Close menu on route change (good for mobile UX)
   useEffect(() => {
+  // Close menu asynchronously after render
     if (menuOpen) {
-      setMenuOpen(false);
+      const timer = setTimeout(() => setMenuOpen(false), 0);
+      return () => clearTimeout(timer);
     }
   }, [pathname, menuOpen]);
 
+  // --- Signout and Verification Logic (Commented out as APIs are missing) ---
+  /*
+  // import { useRouter } from "next/navigation";
+  // const router = useRouter();
+  // const handleSignout = async () => {
+  //    ... signout logic ...
+  // };
+  */
+  
+  // --- Navigation Links ---
+  // Note: Removed duplicate 'Overview' link
   const navLinks = [
     { label: "Overview", href: "/dashboard" }, // Assumes root /dashboard is the overview
     { label: "Products", href: "/dashboard/products" },
-    { label: "Orders", href: "/dashboard/orders" },
+    { label: "Orders", href: "/dashboard/orders" }, 
     { label: "Reviews", href: "/dashboard/reviews" },
     { label: "Profile", href: "/dashboard/profile" },
     { label: "Billing", href: "/dashboard/billing" },
@@ -36,20 +49,20 @@ export default function DashboardLayout({
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50"> 
       {/* -------------------- Sidebar Container -------------------- */}
       <aside className="relative">
+        
         {/* Mobile Menu Toggle (Visible only on small screens) */}
         <span
           aria-label="Open menu"
           onClick={handleMenuClick}
           className="lg:hidden cursor-pointer fixed right-4 top-4 z-50 bg-white p-2 rounded-md shadow-lg transition duration-200 hover:scale-105"
         >
-          {menuOpen ? (
-            <X className="w-6 h-6 text-amber-700" />
-          ) : (
-            <Menu className="w-6 h-6 text-amber-700" />
-          )}
+          {menuOpen 
+            ? <X className="w-6 h-6 text-amber-700" /> 
+            : <Menu className="w-6 h-6 text-amber-700" />
+          }
         </span>
 
         {/* Sidebar Panel - Fixed on Desktop, Collapsible on Mobile */}
@@ -61,37 +74,52 @@ export default function DashboardLayout({
         >
           {/* Logo/Branding */}
           <div className="text-xl font-bold text-amber-700 mb-6 mt-2">
-            Handcrafted Haven
+             Handcrafted Haven
           </div>
-
+          
           {/* Navigation */}
           <nav
             // The lg:flex ensures navigation is always visible on desktop
             className={`
-              ${
-                menuOpen ? "flex flex-col" : "hidden"
-              } lg:flex lg:flex-col space-y-1
+              ${menuOpen ? "flex flex-col" : "hidden"} lg:flex lg:flex-col space-y-1
             `}
           >
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={`hover:bg-[#ff6900] hover:text-black dark:hover:bg-amber-900 p-2 rounded-lg transition duration-150 ease-in-out font-medium flex items-center ${
-                  pathname === link.href
-                    ? "bg-[#ff6900] text-black shadow-md" // Active state
+                // When clicking a link, we explicitly close the menu immediately.
+                onClick={() => setMenuOpen(false)} 
+                className={`hover:bg-amber-100 dark:hover:bg-amber-900 p-2 rounded-lg transition duration-150 ease-in-out font-medium flex items-center ${
+                  pathname === link.href 
+                    ? "bg-amber-600 text-white shadow-md" // Active state
                     : "text-gray-700 dark:text-gray-300 hover:text-amber-700" // Inactive state
                 }`}
               >
                 {link.label}
               </Link>
             ))}
+            
+            {/* Sign Out Section */}
+            <div className="pt-4 mt-4 border-t border-gray-200">
+                <Button
+                  // onClick={handleSignout}
+                  type="button" 
+                  className="cursor-pointer w-full justify-start flex items-center text-red-600 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition duration-150"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign out
+                </Button>
+            </div>
           </nav>
         </div>
       </aside>
 
-      <main className="flex-1 lg:ml-64 w-full p-4 lg:p-8">{children}</main>
+      {/* -------------------- Main content Area -------------------- */}
+      {/* The lg:ml-64 creates the necessary offset for the fixed sidebar on desktop */}
+      <main className="flex-1 lg:ml-64 w-full p-4 lg:p-8">
+        {children}
+      </main>
     </div>
   );
 }
