@@ -24,8 +24,10 @@ export default function DashboardLayout({
 
   // Close menu on route change (good for mobile UX)
   useEffect(() => {
+  // Close menu asynchronously after render
     if (menuOpen) {
-      setMenuOpen(false);
+      const timer = setTimeout(() => setMenuOpen(false), 0);
+      return () => clearTimeout(timer);
     }
   }, [pathname]);
 
@@ -61,10 +63,21 @@ export default function DashboardLayout({
     }
   };
 
+  // --- Signout and Verification Logic (Commented out as APIs are missing) ---
+  /*
+  // import { useRouter } from "next/navigation";
+  // const router = useRouter();
+  // const handleSignout = async () => {
+  //    ... signout logic ...
+  // };
+  */
+  
+  // --- Navigation Links ---
+  // Note: Removed duplicate 'Overview' link
   const navLinks = [
     { label: "Overview", href: "/dashboard" },
     { label: "Products", href: "/dashboard/products" },
-    { label: "Orders", href: "/dashboard/orders" },
+    { label: "Orders", href: "/dashboard/orders" }, 
     { label: "Reviews", href: "/dashboard/reviews" },
     { label: "Profile", href: "/dashboard/profile" },
     { label: "Billing", href: "/dashboard/billing" },
@@ -102,7 +115,7 @@ export default function DashboardLayout({
               Handcrafted Haven
             </h1>
           </div>
-
+          
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
             {navLinks.map((link) => (
