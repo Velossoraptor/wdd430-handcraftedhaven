@@ -4,14 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { X, Menu } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [loggedInUser, setLoggedInUser] = useState<string | undefined>(
+    undefined
+  );
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const handleMenuClick = () => {
     setMenuOpen(!menuOpen);
@@ -23,6 +28,38 @@ export default function DashboardLayout({
       setMenuOpen(false);
     }
   }, [pathname]);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await fetch("/api/auth/session");
+        if (response.ok) {
+          const data = await response.json();
+          setLoggedInUser(data?.fname || undefined);
+        } else {
+          setLoggedInUser(undefined);
+        }
+      } catch (error) {
+        console.error("Session check failed:", error);
+        setLoggedInUser(undefined);
+      }
+    };
+
+    checkSession();
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      const response = await fetch("/api/auth/signout", { method: "POST" });
+      if (response.ok) {
+        setLoggedInUser(undefined);
+        router.push("/");
+        router.refresh();
+      }
+    } catch (error) {
+      console.error("Sign out failed:", error);
+    }
+  };
 
   const navLinks = [
     { label: "Overview", href: "/dashboard" },
@@ -84,6 +121,27 @@ export default function DashboardLayout({
                 {link.label}
               </Link>
             ))}
+
+            {loggedInUser ? (
+              <div className="space-y-3">
+                <div className="px-3 py-2">
+                  <p className="text-sm text-zinc-500">Signed in as</p>
+                  <p className="text-sm font-medium text-zinc-900">
+                    {loggedInUser}
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    handleSignOut();
+                  }}
+                  className="block cursor-pointer w-full bg-zinc-200 text-zinc-700 px-3 py-2 rounded-md text-center hover:bg-zinc-300 transition-colors font-medium"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              ""
+            )}
           </nav>
         </div>
       </aside>
