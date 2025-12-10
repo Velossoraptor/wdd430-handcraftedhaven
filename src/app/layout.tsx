@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import NavBar from "@/components/layout/NavBar";
 import { CartProvider } from "@/components/context/CartContext";
 import { ToastContainer } from "react-toastify";
 
@@ -33,7 +32,6 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gray-50`}
       >
         <CartProvider>
-          <NavBar />
           <main>
             {children}
             <ToastContainer />

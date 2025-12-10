@@ -1,4 +1,5 @@
 import { CartDetails } from "@/app/cart/components/CartPage";
+import NavBar from "@/components/layout/NavBar";
 
 export const metadata = {
   title: "Your Shopping Cart | Handcrafted Haven",
@@ -9,8 +10,11 @@ export const metadata = {
 
 export default function CartPage() {
   return (
-    <main className="mx-auto px-4 py-8">
-      <CartDetails />
-    </main>
+    <>
+      <NavBar />
+      <main className="mx-auto px-4 py-8">
+        <CartDetails />
+      </main>
+    </>
   );
 }

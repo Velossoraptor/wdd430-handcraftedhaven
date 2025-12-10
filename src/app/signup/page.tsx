@@ -1,6 +1,7 @@
 import SignupForm from "@/components/ui/signup-form";
 import { Suspense } from "react";
 import { Metadata } from "next";
+import NavBar from "@/components/layout/NavBar";
 
 export const metadata: Metadata = {
   title: "Sign Up",
@@ -8,15 +9,18 @@ export const metadata: Metadata = {
 
 export default function SignupPage() {
   return (
-    <main className="flex items-center justify-center md:h-screen mt-5 lg:mt-20">
-      <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4">
-        <div className="flex h-20 w-full items-end rounded-lg bg-amber-500 p-3 md:h-16">
-          <div className="w-32 text-white md:w-36">{/*<Logo />*/}</div>
+    <>
+      <NavBar />
+      <main className="flex items-center justify-center md:h-screen mt-5 lg:mt-20">
+        <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4">
+          <div className="flex h-20 w-full items-end rounded-lg bg-amber-500 p-3 md:h-16">
+            <div className="w-32 text-white md:w-36">{/*<Logo />*/}</div>
+          </div>
+          <Suspense>
+            <SignupForm />
+          </Suspense>
         </div>
-        <Suspense>
-          <SignupForm />
-        </Suspense>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
