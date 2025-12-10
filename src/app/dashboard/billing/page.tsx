@@ -96,17 +96,17 @@ export default function BillingPage() {
               Payment Method
             </h2>
             <div className="space-y-2">
-              <p className="text-sm text-gray-500">Card Type:</p>
+              <p className="text-sm text-gray-800">Card Type:</p>
               <p className="text-lg font-bold text-gray-900">{mockBillingInfo.paymentMethod.type}</p>
               
-              <p className="text-sm text-gray-500 pt-2">Card Number:</p>
+              <p className="text-sm text-gray-800 pt-2">Card Number:</p>
               <p className="text-lg font-mono tracking-wider text-gray-900">•••• •••• •••• {mockBillingInfo.paymentMethod.lastFour}</p>
               
-              <p className="text-sm text-gray-500 pt-2">Expires:</p>
+              <p className="text-sm text-gray-800 pt-2">Expires:</p>
               <p className="text-lg font-medium text-gray-900">{mockBillingInfo.paymentMethod.expiry}</p>
             </div>
           </div>
-          <button className="mt-6 w-full text-center text-blue-600 hover:text-blue-800 font-medium transition duration-150 text-sm">
+          <button className="mt-6 w-full text-center text-blue-800 hover:text-blue-800 font-medium transition duration-150 text-sm">
             Update Payment Details
           </button>
         </div>
@@ -123,19 +123,19 @@ export default function BillingPage() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">
                   Invoice ID
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">
                   Date
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-800 uppercase tracking-wider">
                   Amount
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-800 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-800 uppercase tracking-wider">
                   Action
                 </th>
               </tr>
@@ -154,7 +154,7 @@ export default function BillingPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                        invoice.status === 'Paid' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                        invoice.status === 'Paid' ? 'bg-green-50 text-green-900' : 'bg-yellow-50 text-yellow-900'
                     }`}>
                       {invoice.status}
                     </span>
@@ -163,7 +163,7 @@ export default function BillingPage() {
                     {invoice.status === 'Paid' && (
                         <button 
                             onClick={() => handleDownload(invoice.id)}
-                            className="text-amber-600 hover:text-amber-800 transition duration-150 font-medium"
+                            className="text-amber-800 hover:text-amber-900 transition duration-150 font-medium"
                         >
                             Download PDF
                         </button>

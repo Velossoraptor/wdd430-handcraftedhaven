@@ -159,19 +159,19 @@ export function ProductTableBody({ products }: ProductTableBodyProps) {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-amber-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-bold text-amber-800 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-bold text-amber-900 uppercase tracking-wider">
                   Product Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-bold text-amber-800 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-bold text-amber-900 uppercase tracking-wider">
                   Category
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-bold text-amber-800 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-bold text-amber-900 uppercase tracking-wider">
                   Price
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-bold text-amber-800 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-bold text-amber-900 uppercase tracking-wider">
                   Stock
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-bold text-amber-800 uppercase tracking-wider">
+                <th className="px-6 py-3 text-right text-xs font-bold text-amber-900 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -193,7 +193,7 @@ export function ProductTableBody({ products }: ProductTableBodyProps) {
                   </td>
                   <td
                     className={`px-6 py-4 whitespace-nowrap text-sm font-bold ${
-                      product.stock <= 5 ? "text-red-600" : "text-gray-700"
+                      product.stock <= 5 ? "text-red-800" : "text-gray-700"
                     }`}
                   >
                     {product.stock}

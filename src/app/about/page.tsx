@@ -5,19 +5,6 @@ export default function AboutPage() {
   return (
     // mobile nav + top padding to avoid overlap
     <main className="min-h-screen bg-amber-50 text-gray-900 pt-16 md:pt-0">
-      <nav className="md:hidden fixed top-0 left-0 right-0 bg-white/90 backdrop-blur border-b z-50">
-        <div className="max-w-7xl mx-auto px-4 py-2 flex justify-around text-sm font-medium">
-          <Link href="/" className="text-gray-800">
-            Home
-          </Link>
-          <Link href="/shop" className="text-gray-800">
-            Shop
-          </Link>
-          <Link href="/about" className="text-gray-800">
-            About
-          </Link>
-        </div>
-      </nav>
       <section className="container mx-auto px-6 py-20">
         <div className="bg-white/80 dark:bg-gray-800 rounded-xl shadow-lg p-8 md:p-12">
           <header className="max-w-3xl mx-auto text-center">

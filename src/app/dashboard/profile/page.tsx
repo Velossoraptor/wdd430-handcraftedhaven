@@ -88,7 +88,7 @@ export default function SellerProfilePage() {
   };
 
   return (
-    <div className="p-6 md:p-10 space-y-8 bg-gray-50 min-h-screen font-sans">
+    <div className="p-6 md:p-10 space-y-8 bg-gray-50 min-h-full font-sans">
       {showSuccess && (
         <div className="fixed top-2 right-2 z-50 bg-green-500 text-white p-4 rounded-lg flex items-center">
           <CheckCircle className="w-5 h-5 mr-3" /> Profile saved!
@@ -107,7 +107,7 @@ export default function SellerProfilePage() {
         <p className="text-gray-600 mt-1">Manage your public bio and account preferences.</p>
       </header>
 
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-lg space-y-10">
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-lg space-y-10 text-gray-900">
         <div className="space-y-6">
           <h2 className="text-xl font-semibold border-b pb-2">Public Profile</h2>
 
@@ -160,7 +160,7 @@ export default function SellerProfilePage() {
         </div>
 
         <div className="pt-8 border-t border-gray-100 flex justify-end">
-          <button type="submit" disabled={isSaving} className="bg-amber-600 hover:bg-amber-700 text-white py-3 px-6 rounded-lg">
+          <button type="submit" disabled={isSaving} className="bg-amber-900 hover:bg-amber-700 text-white py-3 px-6 rounded-lg">
             {isSaving ? 'Saving...' : 'Save Profile'}
           </button>
         </div>

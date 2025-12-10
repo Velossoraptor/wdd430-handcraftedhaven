@@ -16,7 +16,7 @@ const GeneralSettings = () => (
     
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <h4 className="font-medium text-lg text-gray-700 mb-4 border-b pb-2">Shop Details</h4>
-      <div className="space-y-4">
+      <div className="space-y-4 text-gray-600">
         <label className="block">
           <span className="text-sm font-medium text-gray-700">Shop Name</span>
           <input
@@ -40,7 +40,7 @@ const GeneralSettings = () => (
     </div>
     
     <div className="mt-8">
-      <button className="bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-150">
+      <button className="bg-amber-800 hover:bg-amber-900 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-150">
         Save Changes
       </button>
     </div>
@@ -55,7 +55,7 @@ const SecuritySettings = () => (
     
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
       <h4 className="font-medium text-lg text-gray-700 mb-4 border-b pb-2">Password Update</h4>
-      <div className="space-y-4">
+      <div className="space-y-4 text-gray-600">
         <label className="block">
           <span className="text-sm font-medium text-gray-700">Current Password</span>
           <input
@@ -104,7 +104,7 @@ const NotificationSettings = () => (
       <h4 className="font-medium text-lg text-gray-700 mb-4 border-b pb-2 flex items-center">
         <Mail className="w-4 h-4 mr-2" /> Email Preferences
       </h4>
-      <div className="space-y-3">
+      <div className="space-y-3 text-gray-600">
         <div className="flex justify-between items-center py-2 border-b border-dashed">
           <span className="text-sm text-gray-700">New Order Alerts</span>
           <input type="checkbox" defaultChecked className="h-4 w-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500" />
@@ -169,7 +169,7 @@ export default function SettingsPage() {
                   onClick={() => setActiveSection(key)} // Removed 'as any'
                   className={`flex items-center p-3 rounded-lg font-medium transition duration-150 ease-in-out w-full justify-start capitalize ${
                     isActive 
-                      ? "bg-amber-500 text-white shadow-md" 
+                      ? "bg-amber-900 text-white shadow-md" 
                       : "text-gray-700 hover:bg-gray-100 hover:text-amber-700"
                   }`}
                 >

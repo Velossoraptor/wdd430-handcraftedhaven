@@ -59,7 +59,7 @@ export default function ReviewsPage() {
                 {/* Date and Customer */}
                 <div className="text-right">
                   <p className="text-sm font-medium text-gray-700">{review.customerName}</p>
-                  <p className="text-xs text-gray-500">{review.date}</p>
+                  <p className="text-xs text-gray-900">{review.date}</p>
                 </div>
               </div>
 
@@ -75,7 +75,7 @@ export default function ReviewsPage() {
 
               {/* Action Button Placeholder */}
               <div className="mt-4 pt-3 border-t border-dashed text-right">
-                <button className="text-sm font-medium text-blue-600 hover:text-blue-800">
+                <button className="text-sm font-medium text-blue-800 hover:text-blue-800">
                     Reply to Review
                 </button>
               </div>
