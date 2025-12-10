@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 /*********** Lucid icon***********/
-import { X, Menu } from 'lucide-react';
+import { LogOut, X, Menu } from "lucide-react";
 
 export default function DashboardLayout({
 	children,
