@@ -2,6 +2,7 @@
 import LoginForm from "@/components/ui/login-form"; // Now using the correct login form
 import { Suspense } from "react";
 import { Metadata } from "next";
+import NavBar from "@/components/layout/NavBar";
 
 export const metadata: Metadata = {
   title: "Login",
@@ -9,15 +10,18 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <main className="flex items-center justify-center md:h-screen mt-14">
-      <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4 md:-mt-32">
-        <div className="flex h-20 w-full items-end rounded-lg bg-amber-500 p-3 md:h-36">
-          <div className="w-32 text-white md:w-36">{/* <Logo />*/}</div>
+    <>
+      <NavBar />
+      <main className="flex items-center justify-center md:h-screen mt-14">
+        <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4 md:-mt-32">
+          <div className="flex h-20 w-full items-end rounded-lg bg-amber-500 p-3 md:h-36">
+            <div className="w-32 text-white md:w-36">{/* <Logo />*/}</div>
+          </div>
+          <Suspense>
+            <LoginForm />
+          </Suspense>
         </div>
-        <Suspense>
-          <LoginForm />
-        </Suspense>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
